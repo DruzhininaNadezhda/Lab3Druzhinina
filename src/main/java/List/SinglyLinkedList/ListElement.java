@@ -23,7 +23,6 @@ public class ListElement{
             }
         }
     }
-
     public ListElement(char data, ListElement next) {
         this.data = data;
         this.next = next;
