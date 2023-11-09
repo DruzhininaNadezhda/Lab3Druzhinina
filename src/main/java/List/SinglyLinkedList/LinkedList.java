@@ -28,7 +28,12 @@ public class LinkedList implements Interface {
     @Override
     public char getFirstDelete() {
         char g = getFirst();
-       delete(g);
+        if (head != null) {
+            // данные в голове
+                if (head.data == g) {
+                    head = head.next;
+                }
+        }
         return g;
     }
 
@@ -61,7 +66,21 @@ public class LinkedList implements Interface {
     @Override
     public char getEndDelete() {
         char g = getEnd();
-        delete(g);
+        if (head != null) {
+            // данные в голове
+            ListElement node = head;
+            //цикл
+            while (node.next != null) {
+                if (node.next.data == g) {
+                }
+                if (node.next == tail) {
+                    tail = node;
+                    node.next = null;
+                    continue;
+                }
+                node = node.next;
+            }
+        }
         return g;
     }
 
@@ -113,7 +132,7 @@ public class LinkedList implements Interface {
                 node = node.next;
             }
         }
-            return g;
+        return g;
     }
     public void encrypt() {
         if (head != null) {
@@ -142,7 +161,7 @@ public class LinkedList implements Interface {
         return sb.toString();
     }
     public static void main(String[] args) {
-       LinkedList list = new LinkedList();
+        LinkedList list = new LinkedList();
         list.addEnd('l');
         //list.addFirst('a');
         //list.addFirst('v');
@@ -152,11 +171,11 @@ public class LinkedList implements Interface {
         //list.addEnd('b');
         System.out.println(list);
         //System.out.println(list.getFirstDelete());
-        //System.out.println(list.getEnd());
+        System.out.println(list.getEndDelete());
         //list.delete('a');
         //System.out.println(list.yesOrNo('b'));
         //System.out.println(list);
-        list.encrypt();
+        //list.encrypt();
         //list.emptyList();
         System.out.println(list);
         System.out.println(list.tail.print());
