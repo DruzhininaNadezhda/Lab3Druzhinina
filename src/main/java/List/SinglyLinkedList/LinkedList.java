@@ -1,15 +1,17 @@
 package List.SinglyLinkedList;
 
 
-public class LinkedList implements Interface {
+import java.util.Iterator;
+import java.util.Objects;
 
+public class LinkedList  implements Interface {
     private ListElement head;
     private ListElement tail;
 
     @Override
     public void addFirst(char data) {
         //проверка на пустоту и создание нового списка с головой из заданого элемента
-        ListElement  a = new ListElement (data, null);
+        ListElement a = new ListElement(data, null);
         if (head == null) {
             head = tail = a;
         } else {
@@ -30,9 +32,9 @@ public class LinkedList implements Interface {
         char g = getFirst();
         if (head != null) {
             // данные в голове
-                if (head.data == g) {
-                    head = head.next;
-                }
+            if (head.data == g) {
+                head = head.next;
+            }
         }
         return g;
     }
@@ -56,7 +58,6 @@ public class LinkedList implements Interface {
             tail = a;
         }
     }
-
 
     @Override
     public char getEnd() {
@@ -134,10 +135,11 @@ public class LinkedList implements Interface {
         }
         return g;
     }
+
     public void encrypt() {
         if (head != null) {
             ListElement node = head;
-            int n =1;
+            int n = 1;
             //цикл
             while (node != null) {
                 node.data = (char) (node.data + n);
@@ -145,39 +147,73 @@ public class LinkedList implements Interface {
                 node = node.next;
             }
         }
-
     }
-
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
         ListElement node = head;
-        while (node!= null) {
+        while (node != null) {
             sb.append(node.data);
             node = node.next;
         }
         sb.append("]");
         return sb.toString();
     }
+
+    @Override
+    public Iterator <Character>  iterator() {
+        return new MyIterator(head);
+    }
+
+    private class MyIterator implements Iterator {
+        ListElement head;
+        ListElement current;
+
+        public MyIterator(ListElement head) {
+            this.head = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            current = current == null ? head : current.next;
+            return current != null;
+        }
+
+        @Override
+        public Character next() {
+            return current != null ? current.data : null;
+        }
+    }
+
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
-        list.addEnd('l');
-        //list.addFirst('a');
-        //list.addFirst('v');
+        //list.addEnd('l');
+        list.addFirst('v');
+        list.addFirst('a');
         //list.addFirst('j');
         list.addEnd('a');
         list.addFirst('j');
         //list.addEnd('b');
         System.out.println(list);
         //System.out.println(list.getFirstDelete());
-        System.out.println(list.getEndDelete());
+        //System.out.println(list.getEndDelete());
         //list.delete('a');
         //System.out.println(list.yesOrNo('b'));
         //System.out.println(list);
         //list.encrypt();
         //list.emptyList();
-        System.out.println(list);
-        System.out.println(list.tail.print());
+        //System.out.println(list);
+        //System.out.println(list.tail.print());
+        for (Object d : list) {
+            System.out.println(d);
+        }
+        System.out.println("\t");
+        for (Object d : list) {
+            if (list.yesOrNo('v')) {
+                list.delete((Character) d);
+                System.out.println(2);}
+
+            }System.out.println(list);
+        }
     }
-}

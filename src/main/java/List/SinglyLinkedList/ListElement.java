@@ -8,7 +8,7 @@ public class ListElement{
     ListElement next;
     //ссылка клетку перед
     ListElement previous;
-   private char [] data1 = new char[10];
+    private char [] data1 = new char[10];
 
     public char[] getData1() {
         return data1;

@@ -1,8 +1,9 @@
 package List.SinglyLinkedList;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 
-public class List2 implements Interface {
+public class DoubleLinkedList implements Interface {
     private ListElement head;
     private ListElement tail;
 
@@ -35,6 +36,7 @@ public class List2 implements Interface {
         }
         return g;
     }
+
     @Override
     public void emptyList() {
         if (head == null) {
@@ -60,13 +62,26 @@ public class List2 implements Interface {
 
     @Override
     public char getEnd() {
-        return tail != null ? tail.data : head.data;
+        return head != null ? tail.data : 0;
     }
 
     @Override
     public char getEndDelete() {
         char g = getEnd();
-        delete(g);
+        if (head != null) {
+            ListElement node = head;
+            while (node.next != null) {
+
+                if (node.next.data == g) {
+                    if (node.next == tail) {
+                        tail = node;
+                        node.next = null;
+                        continue;
+                    }
+                }
+                node = node.next;
+            }
+        }
         return g;
     }
 
@@ -77,7 +92,7 @@ public class List2 implements Interface {
             // данные в голове
             ListElement node = head;
             //цикл
-            while (node.next!= null) {
+            while (node.next != null) {
                 //значение в голове
                 if (head.data == data) {
                     head = head.next;
@@ -92,11 +107,11 @@ public class List2 implements Interface {
                         node.next = null;
                         continue;
                     }
-                        // значение не последние
+                    // значение не последние
 
                     node.next = node.next.next;
                     node.next.previous = node;
-                       continue;
+                    continue;
                     // значение не совпало, просто завершается  IF и продолжается цикл
                 }
                 // шаг цикла
@@ -139,10 +154,11 @@ public class List2 implements Interface {
             }
         }
     }
+
     public void encryptBack() {
         if (head != null) {
             ListElement node = tail;
-            int n =(char) 1;
+            int n = (char) 1;
             //цикл
             while (node.previous != null) {
                 node.data = (char) (node.data + n);
@@ -174,8 +190,9 @@ public class List2 implements Interface {
         sb.append("]");
         return sb.toString();
     }
-    public void addArrayFirst (char [] chars) {
-        for (int i = (chars.length-1); (i+1) > 0; i--) {
+
+    public void addArrayFirst(char[] chars) {
+        for (int i = (chars.length - 1); (i + 1) > 0; i--) {
             ListElement first = new ListElement(null, chars[i], null);
             //проверка на пустоту и создание нового списка с головой из заданого элемента
             if (head == null) {
@@ -187,20 +204,22 @@ public class List2 implements Interface {
             }
         }
     }
-    public void addArrayEnd (char [] chars) {
+
+    public void addArrayEnd(char[] chars) {
         for (int i = 0; i < chars.length; i++) {
-        ListElement first = new ListElement(null, chars[i], null);
-        //проверка на пустоту и создание нового списка с головой из заданого элемента
-        if (head == null) {
-            head = tail = first;
-        } else {
-            tail.next = first;
-            first.previous = tail;
-            tail = first;
+            ListElement first = new ListElement(null, chars[i], null);
+            //проверка на пустоту и создание нового списка с головой из заданого элемента
+            if (head == null) {
+                head = tail = first;
+            } else {
+                tail.next = first;
+                first.previous = tail;
+                tail = first;
+            }
         }
     }
-    }
-    public void addListEnd (List2 list, List2 list2) {
+
+    public void addListEnd(DoubleLinkedList list, DoubleLinkedList list2) {
         for (ListElement i = list2.head; i != null; i = i.next) {
             ListElement first = new ListElement(null, i.data, null);
             //проверка на пустоту и создание нового списка с головой из заданого элемента
@@ -214,7 +233,8 @@ public class List2 implements Interface {
             list2.head = null;
         }
     }
-    public void addListFirst (List2 list, List2 list2) {
+
+    public void addListFirst(DoubleLinkedList list, DoubleLinkedList list2) {
         for (ListElement i = list2.tail; i != null; i = i.previous) {
             ListElement first = new ListElement(null, i.data, null);
             //проверка на пустоту и создание нового списка с головой из заданого элемента
@@ -228,8 +248,9 @@ public class List2 implements Interface {
             list2.head = null;
         }
     }
-    public void addCollectionFirst (List2 list, ArrayList <Character> list7) {
-        for (int i = (list7.size()-1); (i+1) > 0; i--) {
+
+    public void addCollectionFirst(DoubleLinkedList list, ArrayList<Character> list7) {
+        for (int i = (list7.size() - 1); (i + 1) > 0; i--) {
             ListElement first = new ListElement(null, list7.get(i), null);
             //проверка на пустоту и создание нового списка с головой из заданого элемента
             if (head == null) {
@@ -241,7 +262,8 @@ public class List2 implements Interface {
             }
         }
     }
-    public void addCollectionEnd (List2 list, ArrayList <Character> list7) {
+
+    public void addCollectionEnd(DoubleLinkedList list, ArrayList<Character> list7) {
         for (int i = 0; i < list7.size(); i++) {
             ListElement first = new ListElement(null, list7.get(i), null);
             //проверка на пустоту и создание нового списка с головой из заданого элемента
@@ -254,12 +276,51 @@ public class List2 implements Interface {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DoubleLinkedList that = (DoubleLinkedList) o;
+        return Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, tail);
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new DoubleLinkedList.MyIterator(head);
+    }
+
+    private class MyIterator implements Iterator<Character> {
+        ListElement head;
+        ListElement current;
+
+        public MyIterator(ListElement head) {
+            this.head = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            current = current == null ? head : current.next;
+            return current != null;
+        }
+
+        @Override
+        public Character next() {
+            return current != null ? current.data : null;
+        }
+    }
+
     public static void main(String[] args) {
-       char [] chars = new char[] {'1','2','3'};
-        ArrayList <Character> list3 = new ArrayList <Character> ();
+        char[] chars = new char[]{'1', '2', '3'};
+        ArrayList<Character> list3 = new ArrayList<Character>();
         list3.add('s');
         list3.add('f');
-        List2 list = new List2();
+        DoubleLinkedList list = new DoubleLinkedList();
         list.addEnd('l');
         list.addFirst('a');
         list.addFirst('v');
@@ -267,32 +328,11 @@ public class List2 implements Interface {
         list.addEnd('a');
         list.addFirst('j');
         list.addEnd('b');
-        List2 list2 = new List2();
-        list2.addEnd('l');
-        list2.addFirst('a');
-        list2.addFirst('v');
-        list2.addFirst('a');
-        list2.addEnd('a');
-        list2.addFirst('j');
-        list2.addEnd('b');
-        //System.out.println(list.getEnd());
-        //System.out.println(list.getFirst());
-        //System.out.println(list.getFirstDelete());
-        //System.out.println(list.getEndDelete());
-        //list.delete('a');
-        //System.out.println(list.yesOrNo('a'));
-        //list.encrypt();
-        //list.emptyList();
-        //list.addArrayEnd(chars);
-        System.out.println(list2);
-        System.out.println(list3);
-        list2.addCollectionEnd(list2, list3);
-        //list.encryptBack();
-        //System.out.println(list2);
-        //System.out.println(list.backToString());
-        //list.addListFirst(list, list2);
-        System.out.println(list2);
-        //System.out.println(list.backToString());
-        //System.out.println(list2);
+        for (Object d : list) {
+            if (list.yesOrNo('a')) {
+                System.out.println(d);
+                break;
+            }
+        }
     }
 }
